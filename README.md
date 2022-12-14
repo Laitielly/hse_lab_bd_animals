@@ -86,7 +86,7 @@ The database has the following functions and procedures:
   - The database must be in the third normal form or higher - check.
   - The minimum number of tables is 4 - check.
   - All connections from the GUI must be made by a dedicated, non-root, user:
-      You can read more about the users in users.txt. In short, we have 2 users - one creates a database and gives rights to it to the client (both are not the root users), and the second uses a database created by creator. Accordingly, the item is executed.
+      You can read more about the users in users.txt. In short, we have 2 users - one creates a database and gives rights to it to the client (both are not the root users), and the second uses a database created by creator. Accordingly, the item is executed. Creator performs all actions through the logs database created earlier, where the original functions of working with authorization and creating the animals database are stored. Connects to animals only if the client is granted rights.
   - There must be at least one index created by you for the selected text non-key field.
     There are 2 indexes created here: 
       - find_by_phenotype for finding and deleting an animal by phenotype; 
