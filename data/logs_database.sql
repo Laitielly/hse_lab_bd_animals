@@ -1,4 +1,4 @@
--- The authorization database, in addition to the main functions, 
+-- The authorization database, in addition to the main functions,
 -- stores the functions of creating the database we need.
 
 -- Creating a table with the content of user logins and their rights.
@@ -54,7 +54,7 @@ BEGIN
             name text NOT NULL,
             district text NOT NULL,
             phone numeric(10) NOT NULL);');
-			
+
 -- Create table about animals.
   PERFORM dblink_exec('myconn',
         'CREATE TABLE animals (
@@ -195,7 +195,7 @@ PERFORM dblink_exec('myconn',
             END;
         $delete_row$ LANGUAGE plpgsql;');
 
--- A function that changes the price in the purchase, 
+-- A function that changes the price in the purchase,
 -- taking into account the buyer's discount and the price of the animal.
 PERFORM dblink_exec('myconn',
         'CREATE OR REPLACE FUNCTION counter_function()
@@ -219,7 +219,7 @@ PERFORM dblink_exec('myconn',
             FOR EACH ROW
             EXECUTE PROCEDURE counter_function();');
 
--- Trigger function that changes the condition of 
+-- Trigger function that changes the condition of
 -- the animal to purchased or not, depending on the table purchase.
 PERFORM dblink_exec('myconn',
         'CREATE OR REPLACE FUNCTION bought_animal()
@@ -298,6 +298,29 @@ PERFORM dblink_exec('myconn',
         			WHERE b.phone = phone_inp;
         		END;
         		$find_buyer_by_phone$ LANGUAGE plpgsql;');
+
+-- The function of searching for a buyer by his or her passport, returns his or her purchases too.
+-- SELECT find_buyer_by_passport(2216872333);
+  PERFORM dblink_exec('myconn',
+        'CREATE OR REPLACE FUNCTION find_buyer_by_passport(passport_inp numeric(10))
+          	RETURNS TABLE(
+          		pasport numeric(10),
+          		name text,
+          		phone numeric(10),
+          		id numeric(6),
+          		dat date,
+          		price numeric(10, 2),
+          		stamp numeric(6),
+          		idshop numeric(6)
+          	) AS $find_buyer_by_passport$
+          		BEGIN
+          			RETURN QUERY SELECT b.pasport, b.name, b.phone, p.id,
+          			p.dat, p.price, p.stamp, a.idshop
+          			FROM buyer as b, purchase AS p, animals as a
+          			WHERE passport_inp = p.idbuyer and passport_inp = b.pasport and
+          			p.stamp = a.stamp;
+          		END;
+          		$find_buyer_by_passport$ LANGUAGE plpgsql;');
 
 -- Store search function by location and name.
 -- SELECT find_shop_by_location_name('Sovetskyi', 'Zooptorg');
