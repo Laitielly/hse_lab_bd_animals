@@ -1,0 +1,44 @@
+To work with the animals database, you need to provide another database through which using the dblink utility.
+
+Initially, only the creator user has the right to work with tables, functions and procedures in the logs database.
+
+Therefore, for full-fledged work, the logs database itself and the creator user with the rights granted by the user were created by the root user.
+
+The following commands were created through root (in addition to those in the logs_database.sql file).
+
+-- root in logs.
+CREATE ROLE rights_for_creator WITH
+		NOSUPERUSER CREATEDB CREATEROLE NOINHERIT NOREPLICATION;
+GRANT CONNECT ON DATABASE logs to rights_for_creator;
+ALTER ROLE rights_for_creator CREATEROLE;
+ALTER ROLE rights_for_creator LOGIN;
+GRANT USAGE ON SCHEMA public TO rights_for_creator;
+GRANT SELECT ON ALL TABLES IN SCHEMA public TO rights_for_creator;
+GRANT UPDATE ON ALL TABLES IN SCHEMA public TO rights_for_creator;
+GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA public TO rights_for_creator;
+GRANT SELECT ON ALL SEQUENCES IN SCHEMA public TO rights_for_creator;
+GRANT INSERT ON ALL TABLES IN SCHEMA public TO rights_for_creator;
+
+CREATE USER creator WITH PASSWORD 'bkppasswd';
+GRANT rights_for_creator TO creator;
+ALTER ROLE creator CREATEROLE;
+alter user creator createdb;
+grant pg_signal_backend to creator;
+
+CREATE OR REPLACE PROCEDURE grant_to_animals()
+	LANGUAGE SQL
+		AS $$
+			GRANT CONNECT ON DATABASE animals to rights_for_creator;
+		$$;
+
+After that, we connect the creator user to dblink. Now he is the creator of the animals database and has the right to distribute rights to it and delete it. \
+-- We connect to the creative and forget about root.
+CREATE USER client WITH PASSWORD 'client';
+CREATE ROLE rights_for_client WITH
+		NOSUPERUSER NOCREATEDB NOCREATEROLE INHERIT NOREPLICATION;
+
+It is important that after deleting the animals database, all rights will be taken away from the client.
+-- Therefore, after a new database creation, you should call the procedure for granting client rights on behalf of the creator.
+call create_role_client();
+
+Next, we work in the usual mode with the logs and animals database.
