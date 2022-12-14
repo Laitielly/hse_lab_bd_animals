@@ -106,3 +106,46 @@ The database has the following functions and procedures:
   - Deleting by a pre-selected text non-key field - check;
   - Deleting a specific record selected by the user - check;
   - All functions must be implemented as stored procedures - check.
+
+## Data entry examples:
+
+```
+select insert_shop(100001, '4 лапы', 'Советский Бекетова 8', 9000000000);
+select insert_shop(100002, 'Зоопторг', 'Автозавод Львовская 22', 9800000000);
+select insert_shop(100003, 'Багира', 'Ленинский Кировская 9', 9810000000);
+select insert_shop(100004, 'Шапиро', 'Нижегородский Родионова 16', 9820000000);
+select insert_shop(100005, 'Коты и собаки', 'Сормовский Баренца 4', 9830000000);
+select insert_shop(100006, 'Феликс', 'Советский Бринского 18', 9840000000);
+select insert_shop(100007, 'Кошкин дом', 'Советский Лядова 32', 9850000000);
+select insert_shop(100008, 'Домовенок', 'Нижегородский Деловая 1', 9860000000);
+select insert_shop(100009, 'Животные', 'Ленинский Ленина 108', 9870000000);
+select insert_shop(100010, 'Хохотушки лапатушки', 'Ленинский Счастливая 2', 9880000000);
+
+select insert_buyer(1, 'Иванова Дарья',	9876543212,	15);
+select insert_buyer(10, 'Кириенко Евгений',	9876543213,	10);
+select insert_buyer(11, 'Саламонова Екатерина',	9876543214,	30);
+select insert_buyer(21, 'Красавчик Михаил',	9876543215,	0);
+select insert_buyer(31, 'Милый Димон',	9876543216,	12);
+select insert_buyer(41, 'Навороченная Евгения',	9876543217,	15);
+select insert_buyer(51, 'Димыч Дим',	9876543218,	5);
+select insert_buyer(61, 'Полотенцева Светлана',	9876543219,	0);
+select insert_buyer(71,	'Житие Мое',	9876543220,	5);
+select insert_buyer(81,	'Гордиенко Максим',	9876543221,	30);
+
+select insert_animal(1, 'собака', 'акита', 3, 'рыжий', 'мужской', 35000, 100009);
+select insert_animal(2, 'собака', 'дворняжка', 12, 'черный', 'женский', 15000, 100001);
+select insert_animal(3, 'кот', 'сиамский', 4, 'пепельный', 'мужской', 10000, 100002);
+select insert_animal(4, 'кот', 'дворняжка', 6, 'рыжий', 'женский', 5000, 100003);
+select insert_animal(5, 'лемур', 'кошачий', 7, 'серый', 'мужской', 50000, 100004);
+select insert_animal(6, 'белка', 'золотистобрюхая', 2, 'темно рыжий', 'мужской', 13000, 100005);
+select insert_animal(7, 'волк', 'дикий', 24, 'серый', 'женский', 20000, 100006);
+select insert_animal(8, 'тигр', 'амурский', 2, 'рыжий', 'женский', 100000, 100007);
+select insert_animal(9, 'лев', 'сенегальский', 2, 'рыжий', 'мужской', 150000, 100009);
+select insert_animal(10, 'кошкодевочка', '2D', 216, 'брюнетка', 'женский', 1000000, 100008);
+
+select insert_purchase(1, '2018-01-12', 1, 1);
+select insert_purchase(2, '2002-02-12', 2, 10);
+select insert_purchase(3, '2022-12-02', 3, 11);
+select insert_purchase(4, '2008-07-22', 4, 21);
+select insert_purchase(5, '2008-08-13', 5, 31);
+```
